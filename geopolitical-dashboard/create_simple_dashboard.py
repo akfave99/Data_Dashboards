@@ -1,4 +1,50 @@
-<!DOCTYPE html>
+"""
+Create a simple multi-page HTML dashboard with direct links
+"""
+
+def create_dashboard_html():
+    """Create the main dashboard HTML with navigation"""
+    
+    charts = [
+        {
+            "name": "Threat Perception",
+            "file": "threat-perception-analysis.html",
+            "description": "Central Asian Regional Threat Perception Analysis"
+        },
+        {
+            "name": "Supplier Influence",
+            "file": "chart1-supplier-influence.html",
+            "description": "Defense Supplier Influence 3D Surface"
+        },
+        {
+            "name": "Defense Systems",
+            "file": "chart3-defense-systems.html",
+            "description": "Defense Systems Analysis"
+        },
+        {
+            "name": "Multi-Country Radar",
+            "file": "chart4-multi-country-radar.html",
+            "description": "Multi-Country Radar Comparison"
+        },
+        {
+            "name": "Priorities Heatmap",
+            "file": "chart5-priorities-heatmap.html",
+            "description": "Defense Priorities Heatmap"
+        },
+        {
+            "name": "Supplier Connections",
+            "file": "chart7-supplier-connections.html",
+            "description": "Supplier Connections Sankey Diagram"
+        },
+    ]
+    
+    # Create navigation HTML
+    nav_items = ""
+    for i, chart in enumerate(charts):
+        nav_items += f'                <li class="nav-item"><a class="nav-link" href="{chart["file"]}">{chart["name"]}</a></li>\n'
+    
+    # Create index/home page
+    index_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,52 +52,52 @@
     <title>Geopolitical Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
+        body {{
             background: linear-gradient(135deg, #0d1b2a 0%, #1a1a2e 100%);
             color: #fff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
-        }
-        .navbar {
+        }}
+        .navbar {{
             background-color: #0d1b2a;
             border-bottom: 2px solid #1e90ff;
-        }
-        .navbar-brand {
+        }}
+        .navbar-brand {{
             font-weight: bold;
             font-size: 1.5rem;
             color: #1e90ff !important;
-        }
-        .nav-link {
+        }}
+        .nav-link {{
             color: #aaa !important;
             transition: color 0.3s;
             margin: 0 5px;
-        }
-        .nav-link:hover {
+        }}
+        .nav-link:hover {{
             color: #1e90ff !important;
-        }
-        .hero {
+        }}
+        .hero {{
             text-align: center;
             padding: 60px 20px;
-        }
-        .hero h1 {
+        }}
+        .hero h1 {{
             font-size: 3rem;
             font-weight: bold;
             color: #1e90ff;
             margin-bottom: 20px;
             text-shadow: 0 2px 10px rgba(30, 144, 255, 0.3);
-        }
-        .hero p {
+        }}
+        .hero p {{
             font-size: 1.3rem;
             color: #aaa;
             margin-bottom: 40px;
-        }
-        .charts-grid {
+        }}
+        .charts-grid {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             padding: 40px 20px;
-        }
-        .chart-card {
+        }}
+        .chart-card {{
             background-color: #0d1b2a;
             border: 2px solid #1e90ff;
             border-radius: 8px;
@@ -60,28 +106,28 @@
             cursor: pointer;
             text-decoration: none;
             color: #fff;
-        }
-        .chart-card:hover {
+        }}
+        .chart-card:hover {{
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(30, 144, 255, 0.3);
             border-color: #00d4ff;
-        }
-        .chart-card h3 {
+        }}
+        .chart-card h3 {{
             color: #1e90ff;
             margin-bottom: 10px;
-        }
-        .chart-card p {
+        }}
+        .chart-card p {{
             color: #aaa;
             font-size: 0.95rem;
-        }
-        .footer {
+        }}
+        .footer {{
             background-color: #0d1b2a;
             border-top: 2px solid #1e90ff;
             padding: 20px;
             text-align: center;
             color: #aaa;
             margin-top: 40px;
-        }
+        }}
     </style>
 </head>
 <body>
@@ -93,13 +139,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="threat-perception-analysis.html">Threat Perception</a></li>
-                <li class="nav-item"><a class="nav-link" href="chart1-supplier-influence.html">Supplier Influence</a></li>
-                <li class="nav-item"><a class="nav-link" href="chart3-defense-systems.html">Defense Systems</a></li>
-                <li class="nav-item"><a class="nav-link" href="chart4-multi-country-radar.html">Multi-Country Radar</a></li>
-                <li class="nav-item"><a class="nav-link" href="chart5-priorities-heatmap.html">Priorities Heatmap</a></li>
-                <li class="nav-item"><a class="nav-link" href="chart7-supplier-connections.html">Supplier Connections</a></li>
-                </ul>
+{nav_items}                </ul>
             </div>
         </div>
     </nav>
@@ -111,31 +151,16 @@
 
     <div class="container-fluid">
         <div class="charts-grid">
-            <a href="threat-perception-analysis.html" class="chart-card">
-                <h3>Threat Perception</h3>
-                <p>Central Asian Regional Threat Perception Analysis</p>
+"""
+    
+    for i, chart in enumerate(charts):
+        index_html += f"""            <a href="{chart["file"]}" class="chart-card">
+                <h3>{chart["name"]}</h3>
+                <p>{chart["description"]}</p>
             </a>
-            <a href="chart1-supplier-influence.html" class="chart-card">
-                <h3>Supplier Influence</h3>
-                <p>Defense Supplier Influence 3D Surface</p>
-            </a>
-            <a href="chart3-defense-systems.html" class="chart-card">
-                <h3>Defense Systems</h3>
-                <p>Defense Systems Analysis</p>
-            </a>
-            <a href="chart4-multi-country-radar.html" class="chart-card">
-                <h3>Multi-Country Radar</h3>
-                <p>Multi-Country Radar Comparison</p>
-            </a>
-            <a href="chart5-priorities-heatmap.html" class="chart-card">
-                <h3>Priorities Heatmap</h3>
-                <p>Defense Priorities Heatmap</p>
-            </a>
-            <a href="chart7-supplier-connections.html" class="chart-card">
-                <h3>Supplier Connections</h3>
-                <p>Supplier Connections Sankey Diagram</p>
-            </a>
-        </div>
+"""
+    
+    index_html += """        </div>
     </div>
 
     <div class="footer">
@@ -145,4 +170,19 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+</html>"""
+    
+    with open("index.html", "w") as f:
+        f.write(index_html)
+    print("✅ Created index.html - Dashboard Home")
+
+if __name__ == '__main__':
+    print("=" * 70)
+    print("CREATING SIMPLE MULTI-PAGE HTML DASHBOARD")
+    print("=" * 70)
+    print()
+    create_dashboard_html()
+    print()
+    print("=" * 70)
+    print("✅ DASHBOARD CREATED!")
+    print("=" * 70)
