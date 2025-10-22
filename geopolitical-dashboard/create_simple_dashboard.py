@@ -9,27 +9,27 @@ def create_dashboard_html():
         {
             "name": "Threat Perception",
             "file": "threat-perception-analysis.html",
-            "description": "Central Asian Regional Threat Perception Analysis"
+            "description": "Central Asian Regional Threat Perception Analysis with 3D density map and flag images"
         },
         {
             "name": "Supplier Influence",
             "file": "chart1-supplier-influence.html",
-            "description": "Defense Supplier Influence 3D Surface"
+            "description": "Defense Supplier Influence 3D Surface visualization"
         },
         {
             "name": "Defense Systems",
             "file": "chart3-defense-systems.html",
-            "description": "Defense Systems Analysis"
+            "description": "Defense Systems Analysis - Polar chart comparison"
         },
         {
             "name": "Multi-Country Radar",
             "file": "chart4-multi-country-radar.html",
-            "description": "Multi-Country Radar Comparison"
+            "description": "Multi-Country Radar Comparison across regions"
         },
         {
             "name": "Priorities Heatmap",
             "file": "chart5-priorities-heatmap.html",
-            "description": "Defense Priorities Heatmap"
+            "description": "Defense Priorities Heatmap - Color matrix analysis"
         },
         {
             "name": "Supplier Connections",
@@ -40,7 +40,7 @@ def create_dashboard_html():
     
     # Create navigation HTML
     nav_items = ""
-    for i, chart in enumerate(charts):
+    for chart in charts:
         nav_items += f'                <li class="nav-item"><a class="nav-link" href="{chart["file"]}">{chart["name"]}</a></li>\n'
     
     # Create index/home page
@@ -71,6 +71,7 @@ def create_dashboard_html():
             color: #aaa !important;
             transition: color 0.3s;
             margin: 0 5px;
+            font-size: 0.9rem;
         }}
         .nav-link:hover {{
             color: #1e90ff !important;
@@ -153,7 +154,7 @@ def create_dashboard_html():
         <div class="charts-grid">
 """
     
-    for i, chart in enumerate(charts):
+    for chart in charts:
         index_html += f"""            <a href="{chart["file"]}" class="chart-card">
                 <h3>{chart["name"]}</h3>
                 <p>{chart["description"]}</p>
@@ -174,7 +175,7 @@ def create_dashboard_html():
     
     with open("index.html", "w") as f:
         f.write(index_html)
-    print("✅ Created index.html - Dashboard Home")
+    print("✅ Created index.html - Dashboard Home with 6 charts")
 
 if __name__ == '__main__':
     print("=" * 70)
