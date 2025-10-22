@@ -1,1 +1,1 @@
-web: gunicorn TransCaspian_defense_data:server
+web: gunicorn Transcaspian_Defense_Data_app:server
