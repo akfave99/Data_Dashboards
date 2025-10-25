@@ -25,7 +25,7 @@ def create_radar_figure(selected_countries=None, metric_type="influence"):
     df = filter_data(get_data())
 
     if selected_countries is None:
-        selected_countries = df['Country'].unique().tolist()[:3]
+        selected_countries = df['Country'].unique().tolist()
 
     if not selected_countries or len(df) == 0:
         empty_fig = go.Figure()
@@ -106,7 +106,7 @@ def create_radar_figure(selected_countries=None, metric_type="influence"):
 df_data = get_data()
 unique_countries = df_data['Country'].unique().tolist()
 country_options = [{'label': country, 'value': country} for country in unique_countries]
-default_countries = unique_countries[:3] if len(unique_countries) >= 3 else unique_countries
+default_countries = unique_countries
 
 layout = dbc.Container(
     [
