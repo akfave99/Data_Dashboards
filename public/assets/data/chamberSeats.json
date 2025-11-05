@@ -1,0 +1,22 @@
+{
+  "house": {
+    "total": 435,
+    "majority": 218,
+    "parties": [
+      { "code": "DEM", "seats": 214, "color": "#1f77b4", "label": "Democrat" },
+      { "code": "REP", "seats": 221, "color": "#d62728", "label": "Republican" },
+      { "code": "IND", "seats": 0, "color": "#7f7f7f", "label": "Independent" }
+    ],
+    "labels": []
+  },
+  "senate": {
+    "total": 100,
+    "majority": 51,
+    "parties": [
+      { "code": "DEM", "seats": 48, "color": "#1f77b4", "label": "Democrat" },
+      { "code": "REP", "seats": 49, "color": "#d62728", "label": "Republican" },
+      { "code": "IND", "seats": 3, "color": "#7f7f7f", "label": "Independent" }
+    ],
+    "labels": []
+  }
+}

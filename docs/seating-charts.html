@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congressional Seating Charts | Data Dashboards</title>
+    <meta name="description" content="Interactive D3.js visualizations of U.S. House and Senate seating arrangements">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Seating Chart CSS -->
+    <link rel="stylesheet" href="/Data_Dashboards/assets/css/seatingChart.css">
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .page-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .seating-charts-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .info-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-section ul {
+            margin-bottom: 0;
+        }
+
+        .info-section li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="page-header">
+            <h1>🏛️ Congressional Seating Charts</h1>
+            <p>Interactive hemicycle visualizations of U.S. House and Senate seating arrangements</p>
+        </div>
+
+        <div class="seating-charts-container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #333; font-size: 2rem;">
+                118th United States Congress
+            </h2>
+
+            <div class="seating-charts-grid">
+                <!-- House Chart -->
+                <div class="chart-container">
+                    <h3 class="chart-title">House of Representatives</h3>
+                    <div class="chart-svg-container">
+                        <div id="house-chart"></div>
+                    </div>
+                    <div class="chart-summary" id="house-summary"></div>
+                </div>
+
+                <!-- Senate Chart -->
+                <div class="chart-container">
+                    <h3 class="chart-title">Senate</h3>
+                    <div class="chart-svg-container">
+                        <div id="senate-chart"></div>
+                    </div>
+                    <div class="chart-summary" id="senate-summary"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>ℹ️ How to Use</h3>
+            <ul>
+                <li><strong>Hover</strong> over seats to see party affiliation and seat details</li>
+                <li><strong>Click</strong> legend items to toggle party visibility</li>
+                <li><strong>Majority markers</strong> indicate the number of seats needed for majority control</li>
+                <li>Charts automatically adapt to <strong>mobile</strong> and <strong>desktop</strong> viewports</li>
+            </ul>
+        </div>
+
+        <div class="nav-links">
+            <a href="/Data_Dashboards/">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <!-- D3.js Library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Seating Chart Module -->
+    <script src="/Data_Dashboards/assets/js/seatingChart.js"></script>
+
+    <!-- Initialize Charts -->
+    <script>
+        // Wait for DOM and D3 to be ready
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Fetch chamber data
+                const response = await fetch('/Data_Dashboards/assets/data/chamberSeats.json');
+                if (!response.ok) {
+                    throw new Error(`Failed to load chamber data: ${response.statusText}`);
+                }
+                const data = await response.json();
+
+                // Render House chart
+                if (window.SeatChart && data.house) {
+                    window.SeatChart.renderHouse('house-chart', data.house, {
+                        scale: 0.75
+                    });
+
+                    // Update summary
+                    const houseSummary = document.getElementById('house-summary');
+                    if (houseSummary) {
+                        const parties = data.house.parties
+                            .filter(p => p.seats > 0)
+                            .map(p => `${p.label}: ${p.seats}`)
+                            .join(' • ');
+                        houseSummary.textContent = `Total: ${data.house.total} seats • ${parties}`;
+                    }
+                }
+
+                // Render Senate chart
+                if (window.SeatChart && data.senate) {
+                    window.SeatChart.renderSenate('senate-chart', data.senate, {
+                        scale: 0.75
+                    });
+
+                    // Update summary
+                    const senateSummary = document.getElementById('senate-summary');
+                    if (senateSummary) {
+                        const parties = data.senate.parties
+                            .filter(p => p.seats > 0)
+                            .map(p => `${p.label}: ${p.seats}`)
+                            .join(' • ');
+                        senateSummary.textContent = `Total: ${data.senate.total} seats • ${parties}`;
+                    }
+                }
+
+                console.log('✅ Seating charts loaded successfully');
+
+            } catch (error) {
+                console.error('Error loading seating charts:', error);
+
+                // Show error message to user
+                const container = document.querySelector('.seating-charts-container');
+                if (container) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.style.cssText = 'padding: 2rem; text-align: center; color: #d32f2f; background: #ffebee; border-radius: 4px; margin: 1rem;';
+                    errorDiv.innerHTML = `<strong>⚠️ Failed to load seating charts</strong><br>${error.message}`;
+                    container.appendChild(errorDiv);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

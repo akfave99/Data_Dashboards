@@ -1,0 +1,101 @@
+---
+/**
+ * SeatCharts Component
+ * Renders House and Senate hemicycle seating charts using D3.js
+ */
+
+// This component runs client-side, so data fetching happens in the script tag below
+---
+
+<link rel="stylesheet" href="/assets/css/seatingChart.css">
+
+<div class="seating-charts-container">
+  <h2 style="text-align: center; margin-bottom: 1rem; color: #333;">Congressional Seating Charts</h2>
+
+  <div class="seating-charts-grid">
+    <!-- House Chart -->
+    <div class="chart-container">
+      <h3 class="chart-title">House of Representatives</h3>
+      <div class="chart-svg-container">
+        <div id="house-chart"></div>
+      </div>
+      <div class="chart-summary" id="house-summary"></div>
+    </div>
+
+    <!-- Senate Chart -->
+    <div class="chart-container">
+      <h3 class="chart-title">Senate</h3>
+      <div class="chart-svg-container">
+        <div id="senate-chart"></div>
+      </div>
+      <div class="chart-summary" id="senate-summary"></div>
+    </div>
+  </div>
+</div>
+
+<!-- D3.js Library -->
+<script is:inline src="https://d3js.org/d3.v7.min.js"></script>
+
+<!-- Seating Chart Module -->
+<script is:inline src="/assets/js/seatingChart.js"></script>
+
+<!-- Initialize Charts -->
+<script is:inline>
+  // Wait for DOM and D3 to be ready
+  document.addEventListener('DOMContentLoaded', async function() {
+    try {
+      // Fetch chamber data
+      const response = await fetch('/assets/data/chamberSeats.json');
+      if (!response.ok) {
+        throw new Error(`Failed to load chamber data: ${response.statusText}`);
+      }
+      const data = await response.json();
+
+      // Render House chart
+      if (window.SeatChart && data.house) {
+        window.SeatChart.renderHouse('house-chart', data.house, {
+          scale: 0.75
+        });
+
+        // Update summary
+        const houseSummary = document.getElementById('house-summary');
+        if (houseSummary) {
+          const parties = data.house.parties
+            .filter(p => p.seats > 0)
+            .map(p => `${p.label}: ${p.seats}`)
+            .join(' • ');
+          houseSummary.textContent = `Total: ${data.house.total} seats • ${parties}`;
+        }
+      }
+
+      // Render Senate chart
+      if (window.SeatChart && data.senate) {
+        window.SeatChart.renderSenate('senate-chart', data.senate, {
+          scale: 0.75
+        });
+
+        // Update summary
+        const senateSummary = document.getElementById('senate-summary');
+        if (senateSummary) {
+          const parties = data.senate.parties
+            .filter(p => p.seats > 0)
+            .map(p => `${p.label}: ${p.seats}`)
+            .join(' • ');
+          senateSummary.textContent = `Total: ${data.senate.total} seats • ${parties}`;
+        }
+      }
+
+    } catch (error) {
+      console.error('Error loading seating charts:', error);
+
+      // Show error message to user
+      const container = document.querySelector('.seating-charts-container');
+      if (container) {
+        const errorDiv = document.createElement('div');
+        errorDiv.style.cssText = 'padding: 2rem; text-align: center; color: #d32f2f; background: #ffebee; border-radius: 4px; margin: 1rem;';
+        errorDiv.textContent = `Failed to load seating charts: ${error.message}`;
+        container.appendChild(errorDiv);
+      }
+    }
+  });
+</script>
